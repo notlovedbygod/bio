@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>notlovedbygod</title>
-  <meta name="description" content="notlovedbygod">
+  <meta name="description" content="notlovedbygod — not loved by god.">
   <style>
     :root {
       --bg: #ffffff;
@@ -36,6 +36,7 @@
       display: flex;
       justify-content: center;
       padding: 64px 16px;
+      -webkit-font-smoothing: antialiased;
     }
     main { width: 100%; max-width: 360px; }
 
@@ -46,7 +47,13 @@
     h1 { font-size: 1.25rem; font-weight: 600; letter-spacing: -.01em; }
     .bio { color: var(--muted); font-size: .95rem; margin-top: 6px; line-height: 1.5; }
 
-    ul { list-style: none; margin-top: 32px; border-top: 1px solid var(--line); }
+    h2 {
+      font-size: .75rem; font-weight: 500; color: var(--muted);
+      text-transform: uppercase; letter-spacing: .08em;
+      margin-top: 40px;
+    }
+
+    ul { list-style: none; margin-top: 12px; border-top: 1px solid var(--line); }
     li { border-bottom: 1px solid var(--line); }
     a, button.link {
       display: flex; justify-content: space-between; align-items: center;
@@ -55,9 +62,8 @@
       background: none; border: 0; font: inherit; font-size: .95rem; text-align: left; cursor: pointer;
     }
     a:hover, button.link:hover { color: var(--muted); }
+    .sub { color: var(--muted); font-size: .85rem; }
     .arrow { color: var(--muted); }
-
-    .note { margin-top: 24px; font-size: .8rem; color: var(--muted); }
   </style>
 </head>
 <body>
@@ -66,26 +72,19 @@
     <h1>notlovedbygod</h1>
     <p class="bio">not loved by god.</p>
 
+    <h2>Соцсети</h2>
     <ul>
+      <li><a href="https://twitch.tv/notlovedbygod" target="_blank" rel="noopener">Twitch <span class="arrow">↗</span></a></li>
       <li><a href="https://t.me/notlovedbygod" target="_blank" rel="noopener">Telegram <span class="arrow">↗</span></a></li>
+      <li><a href="https://discord.com/users/1337713569659359335" target="_blank" rel="noopener">Discord <span class="arrow">↗</span></a></li>
+      <li><a href="https://youtube.com/channel/UCHf1YjVn3Y3rqJ7q4rVQdqA" target="_blank" rel="noopener">YouTube <span class="arrow">↗</span></a></li>
       <li><a href="https://github.com/notlovedbygod" target="_blank" rel="noopener">GitHub <span class="arrow">↗</span></a></li>
-      <li><button class="link" type="button" id="discord">Discord <span class="arrow" id="discordHint">скопировать ник</span></button></li>
-      <li><a href="mailto:your@email.com">Email <span class="arrow">↗</span></a></li>
+    </ul>
+
+    <h2>Проекты</h2>
+    <ul>
+      <li><a href="https://quickval.site" target="_blank" rel="noopener">quickval <span class="arrow">↗</span></a></li>
     </ul>
   </main>
-
-  <script>
-    // Ссылки и ник — замени на свои
-    document.getElementById("discord").addEventListener("click", async () => {
-      const hint = document.getElementById("discordHint");
-      try {
-        await navigator.clipboard.writeText("notlovedbygod");
-        hint.textContent = "скопировано";
-      } catch {
-        hint.textContent = "notlovedbygod";
-      }
-      setTimeout(() => { hint.textContent = "скопировать ник"; }, 1600);
-    });
-  </script>
 </body>
 </html>
