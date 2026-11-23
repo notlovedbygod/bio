@@ -241,6 +241,22 @@
       filter: drop-shadow(0 18px 50px rgba(255, 255, 255, 0.12));
     }
 
+    .status-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      max-width: 90vw;
+    }
+
+    .status-label {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--faint);
+    }
+
     .status-pill {
       display: inline-flex;
       align-items: center;
@@ -675,9 +691,12 @@
           <span class="status-dot" id="status-dot"></span>
         </div>
         <h1 class="wordmark" id="hero-title">notlovedbygod</h1>
-        <div class="status-pill" id="status-pill">
-          <span class="pulse"></span>
-          <span class="text" id="status-text">online</span>
+        <div class="status-wrap">
+          <span class="status-label">discord status</span>
+          <div class="status-pill" id="status-pill">
+            <span class="pulse"></span>
+            <span class="text" id="status-text">online</span>
+          </div>
         </div>
         <p class="hero-bio" id="hero-bio">Лиц</p>
       </div>
