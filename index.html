@@ -4,379 +4,88 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>notlovedbygod</title>
-  <meta name="description" content="notlovedbygod — bio">
-  <meta name="theme-color" content="#050505">
-  <link rel="icon" href="https://github.com/notlovedbygod.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <meta name="description" content="notlovedbygod">
   <style>
     :root {
-      --bg: #050505;
-      --card: rgba(18, 18, 20, 0.62);
-      --border: rgba(255, 255, 255, 0.08);
-      --text: #ededed;
-      --muted: #8a8a8f;
-      --accent: #c1121f;
-      --accent-soft: rgba(193, 18, 31, 0.35);
-      --radius: 20px;
+      --bg: #ffffff;
+      --text: #111111;
+      --muted: #777777;
+      --line: #e6e6e6;
     }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #0b0b0b;
+        --text: #f2f2f2;
+        --muted: #8a8a8a;
+        --line: #222222;
+      }
+    }
+    :root[data-theme="dark"] {
+      --bg: #0b0b0b;
+      --text: #f2f2f2;
+      --muted: #8a8a8a;
+      --line: #222222;
+    }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; }
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       min-height: 100vh;
       display: flex;
-      align-items: center;
       justify-content: center;
-      padding: 24px 16px;
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
+      padding: 64px 16px;
     }
+    main { width: 100%; max-width: 360px; }
 
-    /* ---------- фон ---------- */
-    #ash { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
-    .glow {
-      position: fixed; z-index: 0; pointer-events: none;
-      width: 70vmax; height: 70vmax; border-radius: 50%;
-      background: radial-gradient(circle, var(--accent-soft), transparent 60%);
-      top: 50%; left: 50%; transform: translate(-50%, -60%);
-      filter: blur(40px); opacity: .55;
-      animation: breathe 8s ease-in-out infinite;
-    }
-    .grain {
-      position: fixed; inset: -50%; z-index: 1; pointer-events: none; opacity: .07;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-      animation: grain 1s steps(6) infinite;
-    }
-    @keyframes breathe { 50% { opacity: .3; transform: translate(-50%, -55%) scale(1.08); } }
-    @keyframes grain {
-      0% { transform: translate(0, 0); } 20% { transform: translate(-5%, 3%); }
-      40% { transform: translate(3%, -6%); } 60% { transform: translate(-3%, 5%); }
-      80% { transform: translate(6%, -2%); } 100% { transform: translate(0, 0); }
-    }
-
-    /* ---------- экран входа ---------- */
-    #enter {
-      position: fixed; inset: 0; z-index: 10;
-      display: flex; align-items: center; justify-content: center;
-      background: rgba(5, 5, 5, .92); backdrop-filter: blur(14px);
-      cursor: pointer; transition: opacity .8s ease, visibility .8s;
-      font-size: .85rem; letter-spacing: .35em; text-transform: lowercase; color: var(--muted);
-    }
-    #enter span { animation: flicker 2.4s infinite; }
-    #enter.hidden { opacity: 0; visibility: hidden; }
-    @keyframes flicker { 0%, 100% { opacity: 1; } 45% { opacity: .35; } 50% { opacity: .9; } 55% { opacity: .4; } }
-
-    /* ---------- карточка ---------- */
-    .wrap { position: relative; z-index: 2; width: 100%; max-width: 440px; perspective: 1000px; }
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 36px 26px 26px;
-      text-align: center;
-      backdrop-filter: blur(18px) saturate(140%);
-      -webkit-backdrop-filter: blur(18px) saturate(140%);
-      box-shadow: 0 30px 80px -20px rgba(0, 0, 0, .8), inset 0 1px 0 rgba(255, 255, 255, .04);
-      transform-style: preserve-3d;
-      transition: transform .15s ease-out;
-      opacity: 0; translate: 0 20px;
-    }
-    body.entered .card { animation: rise .9s cubic-bezier(.2, .8, .2, 1) forwards; }
-    @keyframes rise { to { opacity: 1; translate: 0 0; } }
-
-    .avatar-wrap { position: relative; width: 108px; height: 108px; margin: 0 auto 18px; }
-    .avatar-wrap::before {
-      content: ""; position: absolute; inset: -4px; border-radius: 50%;
-      background: conic-gradient(from 0deg, var(--accent), transparent 40%, var(--accent) 70%, transparent);
-      animation: spin 6s linear infinite; filter: blur(2px);
-    }
     .avatar {
-      position: relative; width: 100%; height: 100%; border-radius: 50%;
-      object-fit: cover; border: 3px solid var(--bg); background: #111;
-      filter: grayscale(.35) contrast(1.05);
+      width: 72px; height: 72px; border-radius: 50%;
+      display: block; margin-bottom: 20px;
     }
-    .status-dot {
-      position: absolute; right: 6px; bottom: 6px; width: 16px; height: 16px;
-      border-radius: 50%; background: #3ba55d; border: 3px solid #121214;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
+    h1 { font-size: 1.25rem; font-weight: 600; letter-spacing: -.01em; }
+    .bio { color: var(--muted); font-size: .95rem; margin-top: 6px; line-height: 1.5; }
 
-    h1 {
-      font-family: "Unbounded", sans-serif; font-weight: 700;
-      font-size: clamp(1.35rem, 6vw, 1.7rem); letter-spacing: -.01em;
-      margin-bottom: 6px; position: relative; display: inline-block;
+    ul { list-style: none; margin-top: 32px; border-top: 1px solid var(--line); }
+    li { border-bottom: 1px solid var(--line); }
+    a, button.link {
+      display: flex; justify-content: space-between; align-items: center;
+      width: 100%; padding: 14px 0;
+      color: var(--text); text-decoration: none;
+      background: none; border: 0; font: inherit; font-size: .95rem; text-align: left; cursor: pointer;
     }
-    /* лёгкий глитч на имени */
-    h1::before, h1::after {
-      content: attr(data-text); position: absolute; inset: 0; opacity: 0;
-    }
-    h1:hover::before { opacity: .8; color: var(--accent); animation: glitch .35s steps(2) infinite; }
-    h1:hover::after  { opacity: .6; color: #4cc9f0; animation: glitch .35s steps(2) reverse infinite; }
-    @keyframes glitch {
-      0% { clip-path: inset(10% 0 60% 0); transform: translate(-2px, 1px); }
-      50% { clip-path: inset(55% 0 15% 0); transform: translate(2px, -1px); }
-      100% { clip-path: inset(30% 0 40% 0); transform: translate(-1px, 2px); }
-    }
+    a:hover, button.link:hover { color: var(--muted); }
+    .arrow { color: var(--muted); }
 
-    .handle { color: var(--muted); font-size: .8rem; margin-bottom: 16px; }
-    .typed { min-height: 1.5em; font-size: .9rem; color: #cfcfd4; margin-bottom: 18px; }
-    .typed::after { content: "▍"; color: var(--accent); animation: blink 1s steps(1) infinite; margin-left: 2px; }
-    @keyframes blink { 50% { opacity: 0; } }
-
-    .tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 24px; }
-    .tag {
-      font-size: .72rem; padding: 5px 10px; border-radius: 999px;
-      border: 1px solid var(--border); color: var(--muted); background: rgba(255, 255, 255, .02);
-    }
-
-    .links { display: flex; flex-direction: column; gap: 10px; }
-    .link {
-      display: flex; align-items: center; gap: 14px;
-      padding: 13px 16px; border-radius: 12px;
-      background: rgba(255, 255, 255, .03); border: 1px solid var(--border);
-      color: var(--text); text-decoration: none; font-size: .88rem; text-align: left;
-      cursor: pointer; font-family: inherit; width: 100%;
-      transition: background .2s, border-color .2s, transform .15s;
-    }
-    .link svg { width: 20px; height: 20px; flex-shrink: 0; fill: currentColor; opacity: .9; }
-    .link .label { flex: 1; }
-    .link .arrow { color: var(--muted); transition: transform .2s, color .2s; }
-    .link:hover { background: rgba(193, 18, 31, .12); border-color: var(--accent-soft); transform: translateY(-2px); }
-    .link:hover .arrow { transform: translateX(3px); color: var(--accent); }
-    .link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-
-    /* ---------- музыка ---------- */
-    .player {
-      display: none; align-items: center; gap: 12px; margin-top: 18px;
-      padding: 10px 14px; border-radius: 12px; border: 1px solid var(--border);
-      background: rgba(255, 255, 255, .02); font-size: .75rem; color: var(--muted); text-align: left;
-    }
-    .player.on { display: flex; }
-    .player button {
-      width: 30px; height: 30px; border-radius: 50%; border: none; cursor: pointer;
-      background: var(--accent); color: #fff; display: grid; place-items: center; flex-shrink: 0;
-    }
-    .player button svg { width: 12px; height: 12px; fill: currentColor; }
-    .player .track { flex: 1; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
-    .bars { display: flex; gap: 2px; align-items: flex-end; height: 14px; }
-    .bars i { width: 3px; background: var(--accent); border-radius: 1px; height: 30%; }
-    .player.playing .bars i { animation: bar .9s ease-in-out infinite; }
-    .bars i:nth-child(2) { animation-delay: .2s !important; }
-    .bars i:nth-child(3) { animation-delay: .4s !important; }
-    .bars i:nth-child(4) { animation-delay: .1s !important; }
-    @keyframes bar { 50% { height: 100%; } }
-
-    footer {
-      display: flex; justify-content: space-between; gap: 12px;
-      margin-top: 22px; padding-top: 16px; border-top: 1px solid var(--border);
-      font-size: .7rem; color: var(--muted); white-space: nowrap;
-    }
-
-    .toast {
-      position: fixed; left: 50%; bottom: 28px; z-index: 20;
-      transform: translate(-50%, 20px); opacity: 0;
-      background: #161618; border: 1px solid var(--border); color: var(--text);
-      padding: 10px 16px; border-radius: 10px; font-size: .8rem;
-      transition: opacity .25s, transform .25s; pointer-events: none;
-    }
-    .toast.show { opacity: 1; transform: translate(-50%, 0); }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { animation: none !important; transition: none !important; }
-      .card { opacity: 1; translate: 0 0; }
-    }
+    .note { margin-top: 24px; font-size: .8rem; color: var(--muted); }
   </style>
 </head>
 <body>
-  <canvas id="ash"></canvas>
-  <div class="glow"></div>
-  <div class="grain"></div>
+  <main>
+    <img class="avatar" src="https://github.com/notlovedbygod.png" alt="">
+    <h1>notlovedbygod</h1>
+    <p class="bio">not loved by god.</p>
 
-  <div id="enter" role="button" tabindex="0" aria-label="Войти"><span>[ click to enter ]</span></div>
-
-  <main class="wrap">
-    <div class="card" id="card">
-      <div class="avatar-wrap">
-        <img class="avatar" src="https://github.com/notlovedbygod.png" alt="аватар notlovedbygod">
-        <span class="status-dot" title="online"></span>
-      </div>
-
-      <!-- ✏️ имя -->
-      <h1 data-text="notlovedbygod">notlovedbygod</h1>
-      <div class="handle">@notlovedbygod</div>
-
-      <!-- текст статуса печатается из списка PHRASES в скрипте ниже -->
-      <div class="typed" id="typed" aria-live="polite"></div>
-
-      <!-- ✏️ теги о себе -->
-      <div class="tags">
-        <span class="tag">🖤 developer</span>
-        <span class="tag">🎧 music</span>
-        <span class="tag">🌙 night owl</span>
-        <span class="tag">📍 earth</span>
-      </div>
-
-      <!-- ✏️ ссылки: замени href на свои -->
-      <nav class="links">
-        <a class="link" href="https://t.me/notlovedbygod" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71l-4.14-3.06-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg>
-          <span class="label">Telegram</span><span class="arrow">→</span>
-        </a>
-        <a class="link" href="https://github.com/notlovedbygod" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.69 5.39-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5z"/></svg>
-          <span class="label">GitHub</span><span class="arrow">→</span>
-        </a>
-        <button class="link" type="button" data-copy="notlovedbygod">
-          <svg viewBox="0 0 24 24"><path d="M20.32 4.37A19.8 19.8 0 0 0 15.4 2.8a13.6 13.6 0 0 0-.63 1.3 18.4 18.4 0 0 0-5.5 0A13 13 0 0 0 8.62 2.8a19.7 19.7 0 0 0-4.93 1.57C.57 9.05-.28 13.6.14 18.1a19.9 19.9 0 0 0 6.04 3.06 14.7 14.7 0 0 0 1.3-2.1 12.9 12.9 0 0 1-2.04-.98l.5-.39a14.2 14.2 0 0 0 12.12 0l.5.39c-.65.39-1.33.71-2.04.98.37.74.81 1.44 1.3 2.1a19.8 19.8 0 0 0 6.04-3.06c.5-5.22-.84-9.73-3.54-13.73zM8.02 15.33c-1.18 0-2.16-1.09-2.16-2.42s.95-2.42 2.16-2.42 2.18 1.1 2.16 2.42c0 1.33-.95 2.42-2.16 2.42zm7.97 0c-1.18 0-2.16-1.09-2.16-2.42s.95-2.42 2.16-2.42 2.18 1.1 2.16 2.42c0 1.33-.94 2.42-2.16 2.42z"/></svg>
-          <span class="label">Discord <span style="color:var(--muted)">· копировать</span></span><span class="arrow">⧉</span>
-        </button>
-        <a class="link" href="https://open.spotify.com/" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24"><path d="M12 0a12 12 0 1 0 0 24 12 12 0 0 0 0-24zm5.5 17.3a.75.75 0 0 1-1.03.25c-2.82-1.72-6.37-2.11-10.55-1.16a.75.75 0 1 1-.33-1.46c4.57-1.04 8.5-.6 11.66 1.34.35.22.47.68.25 1.03zm1.47-3.27a.94.94 0 0 1-1.29.31c-3.23-1.98-8.15-2.56-11.97-1.4a.94.94 0 1 1-.55-1.8c4.37-1.32 9.8-.68 13.5 1.6.44.27.58.85.31 1.29zm.13-3.4C15.23 8.33 8.85 8.12 5.16 9.24a1.13 1.13 0 1 1-.65-2.16c4.23-1.28 11.28-1.03 15.73 1.61a1.13 1.13 0 0 1-1.15 1.94z"/></svg>
-          <span class="label">Spotify</span><span class="arrow">→</span>
-        </a>
-      </nav>
-
-      <!-- плеер появится, только если указан MUSIC_SRC в скрипте -->
-      <div class="player" id="player">
-        <button type="button" id="playBtn" aria-label="play / pause">
-          <svg viewBox="0 0 24 24" id="playIcon"><path d="M6 4l14 8-14 8z"/></svg>
-        </button>
-        <span class="track" id="trackName"></span>
-        <span class="bars"><i></i><i></i><i></i><i></i></span>
-      </div>
-
-      <footer>
-        <span id="clock">--:--</span>
-        <span>loved by few ✦</span>
-      </footer>
-    </div>
+    <ul>
+      <li><a href="https://t.me/notlovedbygod" target="_blank" rel="noopener">Telegram <span class="arrow">↗</span></a></li>
+      <li><a href="https://github.com/notlovedbygod" target="_blank" rel="noopener">GitHub <span class="arrow">↗</span></a></li>
+      <li><button class="link" type="button" id="discord">Discord <span class="arrow" id="discordHint">скопировать ник</span></button></li>
+      <li><a href="mailto:your@email.com">Email <span class="arrow">↗</span></a></li>
+    </ul>
   </main>
 
-  <div class="toast" id="toast">скопировано</div>
-
   <script>
-    // ===================== ✏️ НАСТРОЙКИ =====================
-    const PHRASES = [
-      "not loved by god.",
-      "пишу код по ночам",
-      "слушаю слишком много музыки",
-      "просто существую ✦",
-    ];
-    const MUSIC_SRC  = "";            // например "music.mp3" — положи файл рядом с index.html
-    const TRACK_NAME = "artist — track";
-    const TIMEZONE   = "Europe/Moscow";
-    // ========================================================
-
-    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    // --- вход ---
-    const enter = document.getElementById("enter");
-    const audio = MUSIC_SRC ? new Audio(MUSIC_SRC) : null;
-    function doEnter() {
-      enter.classList.add("hidden");
-      document.body.classList.add("entered");
-      if (audio) { audio.loop = true; audio.volume = .4; audio.play().then(setPlaying).catch(() => {}); }
-      startTyping();
-    }
-    enter.addEventListener("click", doEnter, { once: true });
-    enter.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") doEnter(); });
-
-    // --- плеер ---
-    const player = document.getElementById("player");
-    const playIcon = document.getElementById("playIcon");
-    function setPlaying() {
-      const on = audio && !audio.paused;
-      player.classList.toggle("playing", on);
-      playIcon.innerHTML = on ? '<path d="M6 4h4v16H6zM14 4h4v16h-4z"/>' : '<path d="M6 4l14 8-14 8z"/>';
-    }
-    if (audio) {
-      player.classList.add("on");
-      document.getElementById("trackName").textContent = TRACK_NAME;
-      document.getElementById("playBtn").onclick = () => { audio.paused ? audio.play() : audio.pause(); };
-      audio.addEventListener("play", setPlaying);
-      audio.addEventListener("pause", setPlaying);
-    }
-
-    // --- печатающийся статус ---
-    const typed = document.getElementById("typed");
-    let started = false;
-    function startTyping() {
-      if (started) return; started = true;
-      if (reduced) { typed.textContent = PHRASES[0]; return; }
-      let p = 0, i = 0, del = false;
-      (function tick() {
-        const word = PHRASES[p];
-        typed.textContent = word.slice(0, i);
-        if (!del && i < word.length) { i++; return setTimeout(tick, 70 + Math.random() * 60); }
-        if (!del) { del = true; return setTimeout(tick, 1800); }
-        if (i > 0) { i--; return setTimeout(tick, 35); }
-        del = false; p = (p + 1) % PHRASES.length; setTimeout(tick, 400);
-      })();
-    }
-
-    // --- копирование дискорда ---
-    const toast = document.getElementById("toast");
-    document.querySelectorAll("[data-copy]").forEach(el => el.addEventListener("click", async () => {
-      try { await navigator.clipboard.writeText(el.dataset.copy); toast.textContent = "скопировано: " + el.dataset.copy; }
-      catch { toast.textContent = el.dataset.copy; }
-      toast.classList.add("show");
-      setTimeout(() => toast.classList.remove("show"), 1800);
-    }));
-
-    // --- часы ---
-    const clock = document.getElementById("clock");
-    function updateClock() {
+    // Ссылки и ник — замени на свои
+    document.getElementById("discord").addEventListener("click", async () => {
+      const hint = document.getElementById("discordHint");
       try {
-        clock.textContent = new Intl.DateTimeFormat("ru-RU", { hour: "2-digit", minute: "2-digit", timeZone: TIMEZONE }).format(new Date()) + " · у меня";
-      } catch { clock.textContent = ""; }
-    }
-    updateClock(); setInterval(updateClock, 15000);
-
-    // --- 3D-наклон карточки ---
-    const card = document.getElementById("card");
-    if (!reduced && matchMedia("(hover: hover)").matches) {
-      addEventListener("mousemove", e => {
-        const x = (e.clientX / innerWidth - .5) * 2, y = (e.clientY / innerHeight - .5) * 2;
-        card.style.transform = `rotateY(${x * 6}deg) rotateX(${-y * 6}deg)`;
-      });
-    }
-
-    // --- падающий пепел ---
-    const cv = document.getElementById("ash"), ctx = cv.getContext("2d");
-    let W, H, flakes = [];
-    function resize() {
-      const d = devicePixelRatio || 1;
-      W = cv.width = innerWidth * d; H = cv.height = innerHeight * d;
-      cv.style.width = innerWidth + "px"; cv.style.height = innerHeight + "px";
-      const n = Math.min(90, Math.floor(innerWidth / 14));
-      flakes = Array.from({ length: n }, () => newFlake(true));
-    }
-    function newFlake(any) {
-      const d = devicePixelRatio || 1;
-      return {
-        x: Math.random() * W, y: any ? Math.random() * H : -10,
-        r: (Math.random() * 1.6 + .4) * d, s: (Math.random() * .5 + .2) * d,
-        drift: Math.random() * .6 - .3, a: Math.random() * .5 + .15,
-        red: Math.random() < .12,
-      };
-    }
-    function draw() {
-      ctx.clearRect(0, 0, W, H);
-      for (const f of flakes) {
-        f.y += f.s; f.x += f.drift + Math.sin(f.y / 60) * .2;
-        if (f.y > H + 10) Object.assign(f, newFlake(false));
-        ctx.beginPath(); ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
-        ctx.fillStyle = f.red ? `rgba(193,18,31,${f.a})` : `rgba(220,220,220,${f.a})`;
-        ctx.fill();
+        await navigator.clipboard.writeText("notlovedbygod");
+        hint.textContent = "скопировано";
+      } catch {
+        hint.textContent = "notlovedbygod";
       }
-      requestAnimationFrame(draw);
-    }
-    resize(); addEventListener("resize", resize);
-    if (!reduced) draw();
+      setTimeout(() => { hint.textContent = "скопировать ник"; }, 1600);
+    });
   </script>
 </body>
 </html>
