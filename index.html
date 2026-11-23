@@ -1108,23 +1108,49 @@
       const map = {};
       links.forEach((a) => { map[a.getAttribute("href").slice(1)] = a; });
 
-      const navIo = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((e) => {
-            if (e.isIntersecting) {
-              links.forEach((l) => l.classList.remove("active"));
-              const a = map[e.target.id];
-              if (a) a.classList.add("active");
-            }
-          });
-        },
-        { rootMargin: "-40% 0px -50% 0px", threshold: 0 }
-      );
+      const ids = Object.keys(map);
+      let lock = false, lockTimer = null, ticking = false;
 
-      Object.keys(map).forEach((id) => {
-        const el = document.getElementById(id);
-        if (el) navIo.observe(el);
+      function setActive(id) {
+        links.forEach((l) => l.classList.toggle("active", l === map[id]));
+      }
+
+      function currentId() {
+        const doc = document.documentElement;
+        // у самого низа страницы всегда подсвечиваем последний раздел
+        if (window.scrollY + window.innerHeight >= doc.scrollHeight - 4) {
+          return ids[ids.length - 1];
+        }
+        const line = window.innerHeight * 0.35;
+        let cur = ids[0];
+        ids.forEach((id) => {
+          const el = document.getElementById(id);
+          if (el && el.getBoundingClientRect().top <= line) cur = id;
+        });
+        return cur;
+      }
+
+      function update() {
+        ticking = false;
+        if (!lock) setActive(currentId());
+      }
+
+      addEventListener("scroll", () => {
+        if (!ticking) { ticking = true; requestAnimationFrame(update); }
+      }, { passive: true });
+      addEventListener("resize", update, { passive: true });
+
+      // при клике сразу подсвечиваем нужный пункт и не мигаем промежуточными
+      links.forEach((a) => {
+        a.addEventListener("click", () => {
+          setActive(a.getAttribute("href").slice(1));
+          lock = true;
+          clearTimeout(lockTimer);
+          lockTimer = setTimeout(() => { lock = false; update(); }, 900);
+        });
       });
+
+      update();
     })();
 
     // =========================================================================
