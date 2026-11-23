@@ -318,11 +318,11 @@
     .grid {
       display: grid;
       gap: 14px;
-      grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, max(300px, calc((100% - 28px) / 3))), 1fr));
     }
 
     .grid.socials {
-      grid-template-columns: repeat(auto-fill, minmax(min(100%, 235px), 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, max(235px, calc((100% - 28px) / 3))), 1fr));
     }
 
     /* Монохромная стеклянная карточка + 3D-наклон */
