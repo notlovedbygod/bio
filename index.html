@@ -281,6 +281,44 @@
       display: inline-flex;
     }
 
+    /* Плеер Twitch (показывается только во время эфира) */
+    #live[hidden] {
+      display: none;
+    }
+
+    .live-player {
+      position: relative;
+      width: 100%;
+      max-width: 880px;
+      margin: 0 auto;
+      aspect-ratio: 16 / 9;
+      border-radius: 20px;
+      overflow: hidden;
+      background: #000;
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      box-shadow: 0 28px 60px -28px rgba(0, 0, 0, 0.9);
+    }
+
+    .live-player iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    .live-title {
+      max-width: 880px;
+      margin: 0.85rem auto 0;
+      font-size: 0.93rem;
+      color: var(--dim);
+      text-align: center;
+    }
+
+    .sec-ic.red {
+      color: #ef4444;
+    }
+
     .status-wrap {
       display: flex;
       flex-direction: column;
@@ -742,6 +780,20 @@
       </div>
     </section>
 
+    <!-- Эфир Twitch (виден только во время трансляции) -->
+    <section class="block" id="live" hidden>
+      <div class="sec-head">
+        <h2>
+          <span class="sec-ic red">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49"/><path d="M7.76 16.24a6 6 0 0 1 0-8.49"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M4.93 19.07a10 10 0 0 1 0-14.14"/></svg>
+          </span>
+          Сейчас в эфире
+        </h2>
+      </div>
+      <div class="live-player" id="live-player"></div>
+      <p class="live-title" id="live-title"></p>
+    </section>
+
     <!-- Соцсети -->
     <section class="block" id="socials">
       <div class="sec-head">
@@ -1056,6 +1108,34 @@
           ? "в эфире" + (stream.details ? " • " + stream.details : "")
           : handle.dataset.base;
       }
+
+      setLivePlayer(stream);
+    }
+
+    function setLivePlayer(stream) {
+      const section = document.getElementById("live");
+      const box = document.getElementById("live-player");
+      if (!section || !box) return;
+
+      if (!stream) {
+        // эфир закончился — убираем плеер, чтобы он не грузил трафик
+        section.hidden = true;
+        box.innerHTML = "";
+        return;
+      }
+
+      const channel = (stream.url.match(/twitch\.tv\/([^/?#]+)/i) || [])[1] || "notlovedbygod";
+      if (!box.firstChild) {
+        const parent = location.hostname || "localhost";
+        const iframe = document.createElement("iframe");
+        iframe.src = `https://player.twitch.tv/?channel=${encodeURIComponent(channel)}&parent=${encodeURIComponent(parent)}&muted=true&autoplay=true`;
+        iframe.allow = "autoplay; fullscreen";
+        iframe.allowFullscreen = true;
+        iframe.title = "Трансляция Twitch";
+        box.appendChild(iframe);
+      }
+      document.getElementById("live-title").textContent = stream.details || "";
+      section.hidden = false;
     }
 
     async function syncLanyardStatus() {
